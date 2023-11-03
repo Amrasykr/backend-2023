@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-// pertemuan 4
+// pertemuan 4 20 October 2023
 Route::get('/animals', [AnimalController::class, 'index']);
 Route::post('/animals', [AnimalController::class, 'store']);
 Route::put('/animals/{id}', [AnimalController::class, 'update']);
