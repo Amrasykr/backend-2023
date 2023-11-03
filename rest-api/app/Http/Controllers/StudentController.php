@@ -2,27 +2,42 @@
 
 namespace App\Http\Controllers;
 use App\Models\Student;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
 
 class StudentController extends Controller
 {
     public function index()
-    {
-        //Menampilkan data student
-        $student = Student::all();
-        
-        $data = [
-            'messages' => 'Get All Students',
-            'data' => $student
-        ];
+    {  
+        // Menampilkan data dan memberikan validasi jika data tidak ada. 3 november 2023
+        $students = Student::all();
 
-        return response()->json($data, 200);
+		if ($students) {
+			$response= [
+				'message' => 'Menampilkan Data Semua Student',
+				'data' => $students,
+			];
+			return response()->json($response, 200);
+		} else {
+			$response = [
+				'message' => 'Data tidak ada'
+			];
+			return response()->json($response, 200);
+		}
     }
 
     public function store(Request $request)
     {
-        //Menambahkan data student
+        // Validasi pada data yang di butuhkan saat input
+
+        $request->validate([
+            'nama' => 'required',
+            'nim' => 'required',
+            'email' => 'required | email',
+            'jurusan' => 'required',
+        ]);
+
         $input = [
             'nama' => $request->nama,
             'nim' => $request->nim,
@@ -49,10 +64,10 @@ class StudentController extends Controller
 
         if ($student) {
             $student->update([
-                'nama' => $request->nama,
-                'nim' => $request->nim,
-                'email' => $request->email,
-                'jurusan' => $request->jurusan
+                'nama' => $request->nama ?? $student->nama,
+                'nim' => $request->nim ?? $student->nim,
+                'email' => $request->email ?? $student->email,
+                'jurusan' => $request->jurusan ?? $student->jurusan
             ]);
 
             $data = [
