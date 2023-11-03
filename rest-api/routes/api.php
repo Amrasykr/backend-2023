@@ -27,7 +27,7 @@ Route::post('/animals', [AnimalController::class, 'store']);
 Route::put('/animals/{id}', [AnimalController::class, 'update']);
 Route::delete('/animals/{id}', [AnimalController::class, 'destroy']);
 
-//pertemuan 5 
+//pertemuan 5  27 October 2023
 Route::get('/student', [StudentController::class, 'index']);
 Route::post('/student', [StudentController::class, 'store']);
 Route::put('/student/{id}', [StudentController::class, 'update']);
