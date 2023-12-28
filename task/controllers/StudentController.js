@@ -1,49 +1,64 @@
-const express = require('express')
-const student = require('../data/students')
+// import Model Student
+const Student = require("../models/Student");
 
-class StudentsController{
-    index(req, res){
-        const response = {
-            message : "Menampilkan data students",
-            data : student
-        }
-        res.json(response)
-    }
+class StudentController {
+  // menambahkan keyword async
+  async index(req, res) {
+    // memanggil method static all dengan async await.
+    const students = await Student.all();
 
-    store (req, res){
-        const {nama} = req.body;
-        student.push(nama)
+    const data = {
+      message: "Menampilkkan semua students asda ssdasdsandjashd",
+      data: students,
+    };
 
-        const response = {
-            message : `Menambahkan data student dengan ${nama}`,
-            data : student
-        }
-        res.json(response)
-    }
+    res.json(data);
+    console.log(data);
+  }
 
-    update(req, res){
-        const{id} = req.params;
-        const{nama} = req.body;
-    
-        student[id] = nama
-        const response = {
-            message : `Mengubah data student id ${id} data ${nama}`,
-            data : student
-        }
-        res.json(response)
-    }
+  async store(req, res) {
+    /**
+     * TODO 2: memanggil method create.
+     * Method create mengembalikan data yang baru diinsert.
+     * Mengembalikan response dalam bentuk json.
+     */
 
-    destroy(req, res){
-        const{id} = req.params;
+    const { nama, nim, email, jurusan } = req.body
+    const students = await Student.create(req.body);
+    const data = {
+        message: "Menambahkan data student",
+        data: students
+    };
 
-        student.splice(id, 1);
-        const response = {
-            message : `Menghapus data student id ${id}`,
-            data : student
-        }
-        res.json(response)
-    }
+    res.status(201).json(data);
 }
 
-const StudentController = new StudentsController;
-module.exports=StudentController;
+  update(req, res) {
+    const { id } = req.params;
+    const { nama } = req.body;
+
+    const data = {
+      message: `Mengedit student id ${id}, nama ${nama}`,
+      data: [],
+    };
+
+    res.json(data);
+  }
+
+  destroy(req, res) {
+    const { id } = req.params;
+
+    const data = {
+      message: `Menghapus student id ${id}`,
+      data: [],
+    };
+
+    res.json(data);
+  }
+}
+
+// Membuat object StudentController
+const object = new StudentController();
+
+// Export object StudentController
+module.exports = object;
